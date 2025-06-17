@@ -1,6 +1,6 @@
 # ✨ Full Stack Realtime Chat App ✨
 
-![Demo App](./frontend\public\screenshot_for_readme.jpeg)
+![Demo App](/frontend/public/screenshot_for_readme.jpeg)
 
 
 Highlights:
