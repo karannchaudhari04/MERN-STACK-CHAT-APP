@@ -12,10 +12,32 @@ const LoginPage = () => {
   });
   const { login, isLoggingIn } = useAuthStore();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    login(formData);
-  };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/auth/login`, {
+      method: 'POST',
+      credentials: 'include', // sends cookies for sessions
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      alert("Login successful!");
+      // TODO: Save user info or redirect as needed
+    } else {
+      alert(data.message || "Login failed");
+    }
+  } catch (err) {
+    console.error("Login error:", err);
+    alert("Something went wrong");
+  }
+};
 
   return (
     <div className="h-screen grid lg:grid-cols-2">
