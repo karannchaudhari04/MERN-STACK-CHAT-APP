@@ -1,29 +1,10 @@
-// lib/socket.js
 import { Server } from "socket.io";
-import express from "express";
 import http from "http";
+import express from "express";
 import cors from "cors";
 
 const app = express();
 const server = http.createServer(app);
-
-// Set up CORS for app
-app.use(
-  cors({
-    origin: [
-      "http://localhost:5173",
-      "https://mern-stack-chat-app-rosy.vercel.app",
-    ],
-    credentials: true,
-  })
-);
-
-// Online users tracking
-const userSocketMap = {}; // { userId: socketId }
-
-export const getReceiverSocketId = (userId) => {
-  return userSocketMap[userId];
-};
 
 const io = new Server(server, {
   cors: {
@@ -35,20 +16,24 @@ const io = new Server(server, {
   },
 });
 
-// Socket.IO connection handler
-io.on("connection", (socket) => {
-  console.log("A user connected:", socket.id);
+const userSocketMap = {};
 
+io.on("connection", (socket) => {
   const userId = socket.handshake.query.userId;
-  if (userId) userSocketMap[userId] = socket.id;
+  if (userId) {
+    userSocketMap[userId] = socket.id;
+  }
 
   io.emit("getOnlineUsers", Object.keys(userSocketMap));
 
   socket.on("disconnect", () => {
-    console.log("A user disconnected:", socket.id);
     delete userSocketMap[userId];
     io.emit("getOnlineUsers", Object.keys(userSocketMap));
   });
 });
 
-export { app, server, io };
+export function getReceiverSocketId(userId) {
+  return userSocketMap[userId];
+}
+
+export { app, server, io }; // ✅ Important!

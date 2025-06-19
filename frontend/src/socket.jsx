@@ -1,0 +1,15 @@
+// src/socket.js
+import { io } from "socket.io-client";
+
+let socket;
+
+export const initSocket = (userId) => {
+  socket = io("https://mern-stack-chat-app-2-rw3a.onrender.com", {
+    withCredentials: true,
+    query: { userId },
+  });
+
+  return socket;
+};
+
+export const getSocket = () => socket;
