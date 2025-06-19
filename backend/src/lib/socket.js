@@ -36,4 +36,5 @@ export function getReceiverSocketId(userId) {
   return userSocketMap[userId];
 }
 
-export { app, server, io }; // ✅ Important!
+export { io, app, server };
+

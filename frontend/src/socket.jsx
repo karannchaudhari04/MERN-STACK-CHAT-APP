@@ -1,4 +1,3 @@
-// src/socket.js
 import { io } from "socket.io-client";
 
 let socket;
@@ -6,6 +5,7 @@ let socket;
 export const initSocket = (userId) => {
   socket = io("https://mern-stack-chat-app-2-rw3a.onrender.com", {
     withCredentials: true,
+    transports: ["websocket"], // <--- force websocket if needed
     query: { userId },
   });
 
