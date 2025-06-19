@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import AuthImagePattern from "../components/AuthImagePattern";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Loader2, Lock, Mail, MessageSquare } from "lucide-react";
 
 const LoginPage = () => {
@@ -10,34 +10,19 @@ const LoginPage = () => {
     email: "",
     password: "",
   });
+
   const { login, isLoggingIn } = useAuthStore();
+  const navigate = useNavigate();
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  try {
-    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/auth/login`, {
-      method: 'POST',
-      credentials: 'include', // sends cookies for sessions
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(formData)
-    });
-
-    const data = await res.json();
-
-    if (res.ok) {
-      alert("Login successful!");
-      // TODO: Save user info or redirect as needed
-    } else {
-      alert(data.message || "Login failed");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await login(formData);       // Zustand login call
+      navigate("/");               // Redirect to homepage
+    } catch (err) {
+      console.error("Login error:", err);
     }
-  } catch (err) {
-    console.error("Login error:", err);
-    alert("Something went wrong");
-  }
-};
+  };
 
   return (
     <div className="h-screen grid lg:grid-cols-2">

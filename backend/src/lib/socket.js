@@ -16,25 +16,41 @@ const io = new Server(server, {
   },
 });
 
+// Used to store online users: { userId: socketId }
 const userSocketMap = {};
 
 io.on("connection", (socket) => {
+  console.log("🔌 New client connected:", socket.id);
+
   const userId = socket.handshake.query.userId;
+
   if (userId) {
     userSocketMap[userId] = socket.id;
+    console.log(`✅ User ${userId} connected with socket ID ${socket.id}`);
   }
 
+  // Send updated online users to all clients
   io.emit("getOnlineUsers", Object.keys(userSocketMap));
 
   socket.on("disconnect", () => {
-    delete userSocketMap[userId];
+    console.log("❌ Client disconnected:", socket.id);
+
+    if (userId && userSocketMap[userId] === socket.id) {
+      delete userSocketMap[userId];
+    }
+
     io.emit("getOnlineUsers", Object.keys(userSocketMap));
+  });
+
+  // Optional: handle unexpected errors
+  socket.on("connect_error", (err) => {
+    console.error("⚠️ Socket connection error:", err.message);
   });
 });
 
+// Helper function to get socket ID of a user
 export function getReceiverSocketId(userId) {
   return userSocketMap[userId];
 }
 
 export { io, app, server };
-
