@@ -5,7 +5,7 @@ import { io } from "socket.io-client";
 
 const BASE_URL =
   import.meta.env.MODE === "development"
-    ? "http://localhost:5001" 
+    ? "http://localhost:5000" 
     : "https://mern-stack-chat-app-9dph.onrender.com";
 
 
