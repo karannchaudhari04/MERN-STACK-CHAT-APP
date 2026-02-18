@@ -15,3 +15,4 @@ res.cookie("jwt", token, {
 
   return token;
 };
+
