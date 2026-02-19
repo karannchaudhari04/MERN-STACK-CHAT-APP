@@ -1,14 +1,15 @@
+
 import Navbar from "./components/Navbar";
-import HomePage from "./pages/HomePage";
+import LandingPage from "./pages/LandingPage";
+import ChatPage from "./pages/ChatPage";
 import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
-import SettingsPage from "./pages/SettingsPage";
 import ProfilePage from "./pages/ProfilePage";
 
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuthStore } from "./store/useAuthStore";
-import { useThemeStore } from "./store/useThemeStore";
 import { useEffect, useState } from "react";
+
 
 import { Loader } from "lucide-react";
 import { Toaster } from "react-hot-toast";
@@ -17,7 +18,6 @@ import { initSocket, getSocket } from "./socket";
 
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth, setOnlineUsers } = useAuthStore();
-  const { theme } = useThemeStore();
 
   const [socketInitialized, setSocketInitialized] = useState(false);
 
@@ -54,15 +54,18 @@ const App = () => {
     );
   }
 
+
   return (
-    <div data-theme={theme}>
+    <div data-theme="coffee">
       <Navbar />
-      <Routes>
-        <Route path="/" element={authUser ? <HomePage /> : <Navigate to="/login" />} />
-        <Route path="/signup" element={!authUser ? <SignUpPage /> : <Navigate to="/" />} />
-        <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/" />} />
-        <Route path="/settings" element={<SettingsPage />} />
+
+<Routes>
+        <Route path="/home" element={<LandingPage />} />
+        <Route path="/chat" element={authUser ? <ChatPage /> : <Navigate to="/login" />} />
+        <Route path="/signup" element={!authUser ? <SignUpPage /> : <Navigate to="/chat" />} />
+        <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/chat" />} />
         <Route path="/profile" element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />
+        <Route path="/" element={<Navigate to="/home" />} />
       </Routes>
       <Toaster />
     </div>
