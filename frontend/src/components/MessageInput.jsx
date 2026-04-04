@@ -48,33 +48,40 @@ const MessageInput = () => {
   };
 
   return (
-    <div className="p-4 w-full">
+    <div className="p-4 w-full bg-slate-900/40 border-t border-slate-800/80 backdrop-blur-md">
       {imagePreview && (
-        <div className="mb-3 flex items-center gap-2">
-          <div className="relative">
+        <div className="mb-4 flex items-center gap-3">
+          <div className="relative group">
             <img
               src={imagePreview}
               alt="Preview"
-              className="w-20 h-20 object-cover rounded-lg border border-zinc-700"
+              className="w-24 h-24 object-cover rounded-xl border-2 border-indigo-500/50 shadow-lg"
             />
             <button
               onClick={removeImage}
-              className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-base-300
-              flex items-center justify-center"
+              className="absolute -top-2 -right-2 size-6 rounded-full bg-slate-800 border border-slate-700 text-slate-300 hover:text-white shadow-xl flex items-center justify-center transition-transform hover:scale-110"
               type="button"
             >
-              <X className="size-3" />
+              <X className="size-3.5" />
             </button>
           </div>
         </div>
       )}
 
-      <form onSubmit={handleSendMessage} className="flex items-center gap-2">
-        <div className="flex-1 flex gap-2">
+      <form onSubmit={handleSendMessage} className="flex items-center gap-3">
+        <div className="flex-1 flex gap-2 relative bg-slate-950/50 border border-slate-800 rounded-2xl p-2 shadow-inner focus-within:border-indigo-500/50 transition-colors">
+          <button
+            type="button"
+            className={`p-2 rounded-xl transition-colors shrink-0
+                     ${imagePreview ? "text-indigo-400 bg-indigo-500/10" : "text-slate-400 hover:bg-slate-800 hover:text-slate-200"}`}
+            onClick={() => fileInputRef.current?.click()}
+          >
+            <Image size={22} />
+          </button>
           <input
             type="text"
-            className="w-full input input-bordered rounded-lg input-sm sm:input-md"
-            placeholder="Type a message..."
+            className="w-full bg-transparent text-slate-100 placeholder-slate-500 focus:outline-none px-2 font-light"
+            placeholder="Write a message..."
             value={text}
             onChange={(e) => setText(e.target.value)}
           />
@@ -85,22 +92,13 @@ const MessageInput = () => {
             ref={fileInputRef}
             onChange={handleImageChange}
           />
-
-          <button
-            type="button"
-            className={`hidden sm:flex btn btn-circle
-                     ${imagePreview ? "text-emerald-500" : "text-zinc-400"}`}
-            onClick={() => fileInputRef.current?.click()}
-          >
-            <Image size={20} />
-          </button>
         </div>
         <button
           type="submit"
-          className="btn btn-sm btn-circle"
+          className="p-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-2xl transition-all shadow-lg shadow-indigo-500/25 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-indigo-600"
           disabled={!text.trim() && !imagePreview}
         >
-          <Send size={22} />
+          <Send size={22} className="ml-1" />
         </button>
       </form>
     </div>

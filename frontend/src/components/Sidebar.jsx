@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useChatStore } from "../store/useChatStore";
 import { useAuthStore } from "../store/useAuthStore";
@@ -20,54 +19,55 @@ const Sidebar = () => {
   if (isUsersLoading) return <SidebarSkeleton />;
 
   return (
-    <aside className="h-full w-full lg:w-80 border-r border-gray-800 flex flex-col bg-gray-900">
+    <aside className="h-full w-full lg:w-96 flex flex-col bg-transparent">
       {/* Header */}
-      <div className="border-b border-gray-800 p-4">
+      <div className="border-b border-slate-800/80 p-5">
         <div className="flex items-center justify-between">
-          <h2 className="font-semibold text-white">Contacts</h2>
-          <label className="flex items-center gap-2 text-sm text-gray-400 cursor-pointer">
+          <h2 className="font-bold text-slate-100 tracking-wide">Contacts</h2>
+          <label className="flex items-center gap-2 text-sm text-slate-400 cursor-pointer hover:text-slate-300 transition-colors">
             <input
               type="checkbox"
               checked={showOnlineOnly}
               onChange={(e) => setShowOnlineOnly(e.target.checked)}
-              className="checkbox checkbox-sm checkbox-primary"
+              className="checkbox checkbox-sm checkbox-primary rounded bg-slate-900 border-slate-700"
             />
-            Online
+            Online Only
           </label>
         </div>
       </div>
 
       {/* User List */}
-      <div className="overflow-y-auto flex-1 py-2">
+      <div className="overflow-y-auto flex-1 py-3 px-3 space-y-1 scrollbar-thin scrollbar-thumb-slate-800">
         {filteredUsers.map((user) => (
           <button
             key={user._id}
             onClick={() => setSelectedUser(user)}
-            className={`w-full p-3 flex items-center gap-3 hover:bg-gray-800 transition-colors ${
-              selectedUser?._id === user._id ? "bg-gray-800" : ""
-            }`}
+            className={`w-full p-4 flex items-center gap-4 rounded-2xl transition-all duration-200 border border-transparent ${selectedUser?._id === user._id
+                ? "bg-slate-800/80 border-slate-700 shadow-md"
+                : "hover:bg-slate-800/40 hover:border-slate-700/50"
+              }`}
           >
             <div className="relative">
               <img
                 src={user.profilePic || "/avatar.png"}
                 alt={user.name}
-                className="size-10 object-cover rounded-full"
+                className="size-12 object-cover rounded-full border-2 border-slate-800 shadow-sm"
               />
               {onlineUsers.includes(user._id) && (
-                <span className="absolute bottom-0 right-0 size-3 bg-green-500 rounded-full ring-2 ring-gray-900" />
+                <span className="absolute bottom-0 right-0 size-3.5 bg-emerald-500 rounded-full ring-2 ring-slate-900" />
               )}
             </div>
             <div className="text-left min-w-0">
-              <div className="font-medium text-white truncate">{user.fullName}</div>
-              <div className="text-xs text-gray-500">
-                {onlineUsers.includes(user._id) ? "Online" : "Offline"}
+              <div className="font-semibold text-slate-100 truncate">{user.fullName}</div>
+              <div className="text-sm font-light text-slate-400 mt-0.5">
+                {onlineUsers.includes(user._id) ? <span className="text-emerald-400">Online</span> : "Offline"}
               </div>
             </div>
           </button>
         ))}
 
         {filteredUsers.length === 0 && (
-          <div className="text-center text-gray-500 py-8">No users found</div>
+          <div className="text-center text-slate-500 py-10 font-light">No users found based on filters.</div>
         )}
       </div>
 
@@ -82,16 +82,16 @@ const Footer = () => {
   const { authUser } = useAuthStore();
 
   return (
-    <div className="border-t border-gray-800 p-3 bg-gray-800/50">
-      <div className="flex items-center gap-3">
+    <div className="border-t border-slate-800/80 p-4 bg-slate-950/40 backdrop-blur-md">
+      <div className="flex items-center gap-4">
         <img
           src={authUser?.profilePic || "/avatar.png"}
           alt={authUser?.fullName}
-          className="size-10 rounded-full"
+          className="size-12 rounded-full border-2 border-slate-800 shadow-sm"
         />
         <div className="min-w-0">
-          <div className="font-medium text-white text-sm truncate">{authUser?.fullName}</div>
-          <div className="text-xs text-green-400">Online</div>
+          <div className="font-semibold text-slate-100 truncate">{authUser?.fullName}</div>
+          <div className="text-xs font-medium text-indigo-400 mt-0.5">Your Account</div>
         </div>
       </div>
     </div>
@@ -99,4 +99,3 @@ const Footer = () => {
 };
 
 export default Sidebar;
-
