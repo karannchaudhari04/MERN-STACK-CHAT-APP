@@ -2,10 +2,15 @@
 
 import { Link } from "react-router-dom";
 import { MessageSquare, Users, Shield, Zap } from "lucide-react";
+import { Helmet } from "react-helmet-async";
 
 const LandingPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800">
+      <Helmet>
+        <title>Chatty | Welcome to Realtime Chat</title>
+        <meta name="description" content="Connect with friends and colleagues in real-time. Fast, secure, and easy to use chat application." />
+      </Helmet>
       {/* Hero Section */}
       <div className="container mx-auto px-4 py-16">
         <div className="text-center mb-16">

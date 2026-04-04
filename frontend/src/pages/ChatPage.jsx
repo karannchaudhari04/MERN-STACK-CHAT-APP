@@ -2,6 +2,7 @@ import { useChatStore } from "../store/useChatStore";
 import Sidebar from "../components/Sidebar";
 import NoChatSelected from "../components/NoChatSelected";
 import ChatContainer from "../components/ChatContainer";
+import { Helmet } from "react-helmet-async";
 
 const ChatPage = () => {
   const { selectedUser, setSelectedUser } = useChatStore();
@@ -13,22 +14,23 @@ const ChatPage = () => {
 
   return (
     <div className="h-screen pt-16 bg-gray-900">
+      <Helmet>
+        <title>Chatty | Active Chat</title>
+      </Helmet>
       <div className="h-full container mx-auto px-0 md:px-2">
         <div className="flex h-full md:rounded-xl overflow-hidden bg-gray-800 border border-gray-700 shadow-2xl">
           {/* Sidebar - Contacts List */}
-          <div 
-            className={`w-full md:w-80 flex-shrink-0 border-r border-gray-700 ${
-              selectedUser ? "hidden md:flex" : "flex"
-            }`}
+          <div
+            className={`w-full md:w-80 flex-shrink-0 border-r border-gray-700 ${selectedUser ? "hidden md:flex" : "flex"
+              }`}
           >
             <Sidebar />
           </div>
 
           {/* Chat Area */}
-          <div 
-            className={`flex-1 bg-gray-900 ${
-              selectedUser ? "flex" : "hidden md:flex"
-            }`}
+          <div
+            className={`flex-1 bg-gray-900 ${selectedUser ? "flex" : "hidden md:flex"
+              }`}
           >
             {selectedUser ? (
               <ChatContainer onBack={handleBack} />

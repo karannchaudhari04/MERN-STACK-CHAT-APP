@@ -1,14 +1,15 @@
 
 import Navbar from "./components/Navbar";
-import LandingPage from "./pages/LandingPage";
-import ChatPage from "./pages/ChatPage";
-import SignUpPage from "./pages/SignUpPage";
-import LoginPage from "./pages/LoginPage";
-import ProfilePage from "./pages/ProfilePage";
+import { lazy, Suspense, useEffect, useState } from "react";
+
+const LandingPage = lazy(() => import("./pages/LandingPage"));
+const ChatPage = lazy(() => import("./pages/ChatPage"));
+const SignUpPage = lazy(() => import("./pages/SignUpPage"));
+const LoginPage = lazy(() => import("./pages/LoginPage"));
+const ProfilePage = lazy(() => import("./pages/ProfilePage"));
 
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuthStore } from "./store/useAuthStore";
-import { useEffect, useState } from "react";
 
 
 import { Loader } from "lucide-react";
@@ -59,14 +60,16 @@ const App = () => {
     <div data-theme="coffee">
       <Navbar />
 
-<Routes>
-        <Route path="/home" element={<LandingPage />} />
-        <Route path="/chat" element={authUser ? <ChatPage /> : <Navigate to="/login" />} />
-        <Route path="/signup" element={!authUser ? <SignUpPage /> : <Navigate to="/chat" />} />
-        <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/chat" />} />
-        <Route path="/profile" element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />
-        <Route path="/" element={<Navigate to="/home" />} />
-      </Routes>
+      <Suspense fallback={<div className="flex items-center justify-center h-screen"><Loader className="size-10 animate-spin text-primary" /></div>}>
+        <Routes>
+          <Route path="/home" element={<LandingPage />} />
+          <Route path="/chat" element={authUser ? <ChatPage /> : <Navigate to="/login" />} />
+          <Route path="/signup" element={!authUser ? <SignUpPage /> : <Navigate to="/chat" />} />
+          <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/chat" />} />
+          <Route path="/profile" element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />
+          <Route path="/" element={<Navigate to="/home" />} />
+        </Routes>
+      </Suspense>
       <Toaster />
     </div>
   );
