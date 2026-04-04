@@ -12,7 +12,7 @@ const ChatPage = () => {
   };
 
   return (
-    <div className="h-screen pt-20 bg-slate-950 font-['Outfit'] relative overflow-hidden">
+    <div className="h-[100dvh] pt-16 bg-slate-950 font-['Outfit'] relative overflow-hidden flex w-full">
       <Helmet>
         <title>Chatty | Active Chat</title>
       </Helmet>
@@ -21,27 +21,27 @@ const ChatPage = () => {
       <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="h-full container mx-auto px-4 md:px-6 relative z-10 pb-6">
-        <div className="flex h-full md:rounded-[2rem] overflow-hidden bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 shadow-[0_8px_30px_rgb(0,0,0,0.4)]">
-          {/* Sidebar - Contacts List */}
-          <div
-            className={`w-full md:w-96 flex-shrink-0 border-r border-slate-800/80 ${selectedUser ? "hidden md:flex" : "flex"
-              }`}
-          >
-            <Sidebar />
-          </div>
+      {/* WhatsApp-like Full Screen Split Container */}
+      <div className="w-full h-full flex relative z-10 bg-transparent flex-1">
 
-          {/* Chat Area */}
-          <div
-            className={`flex-1 bg-transparent ${selectedUser ? "flex" : "hidden md:flex"
-              }`}
-          >
-            {selectedUser ? (
-              <ChatContainer onBack={handleBack} />
-            ) : (
-              <NoChatSelected />
-            )}
-          </div>
+        {/* Sidebar Pane */}
+        <div
+          className={`w-full md:w-[320px] lg:w-[400px] xl:w-[450px] flex-shrink-0 bg-slate-950 ${selectedUser ? "hidden md:flex" : "flex"
+            }`}
+        >
+          <Sidebar />
+        </div>
+
+        {/* Chat Pane */}
+        <div
+          className={`flex-1 flex flex-col bg-slate-950 overflow-hidden ${selectedUser ? "flex w-full" : "hidden md:flex"
+            }`}
+        >
+          {selectedUser ? (
+            <ChatContainer onBack={handleBack} />
+          ) : (
+            <NoChatSelected />
+          )}
         </div>
       </div>
     </div>
